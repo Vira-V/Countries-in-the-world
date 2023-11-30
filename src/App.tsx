@@ -1,13 +1,11 @@
-import React from "react";
-import "./App.scss";
-import { Card } from "./components/Card";
+import React, { useState } from 'react';
+import './App.scss';
+import countriesFromServer from './components/api/countries.json';
+import { CardList } from './components/CardList/CardList';
 
-function App() {
-  return (
-    <div className="App">
-      <Card />
-    </div>
-  );
-}
+export const App: React.FC = () => {
+  const [countries] = useState(countriesFromServer);
 
-export default App;
+  return <CardList countries={countries} />;
+};
+

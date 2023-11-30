@@ -1,34 +1,33 @@
-import React from "react";
-import "./Card.scss";
+import React from 'react';
+import './Card.scss';
+import { Country } from '../types/Country';
 
-export const Card: React.FC = () => {
-  return (
-    <div className="card">
-      <div>
-        <img
-          className="card__image"
-          src={require("./1024px-Flag_of_the_United_States_(reversed).png")}
-          alt="image of flag"
-        />
-      </div>
-      <div className="card__content">
-        <h3 className="card__title">United States of America</h3>
+type CardProps = {
+  country: Country;
+};
 
-        <div className="card__details">
-          <div className="card__details--population">
-            <p className="detail__title">Population:</p>
-            <p className="detail__value">323,947,000</p>
-          </div>
-          <div className="card__details--region">
-            <p className="detail__title">Region:</p>
-            <p className="detail__value">America</p>
-          </div>
-          <div className="card__details--capital">
-            <p className="detail__title">Capital:</p>
-            <p className="detail__value">Washington</p>
-          </div>
+export const Card: React.FC<CardProps> = ({ country }) => (
+  <div className="card">
+    <div className="card__image">
+      <img src={country.flags.svg} alt="image of flag" />
+    </div>
+    <div className="card__content">
+      <h3 className="card__title">{country.name}</h3>
+
+      <div className="card__details">
+        <div className="card__details--population">
+          <p className="detail__title">Population:</p>
+          <p className="detail__value">{country.population}</p>
+        </div>
+        <div className="card__details--region">
+          <p className="detail__title">Region:</p>
+          <p className="detail__value">{country.region}</p>
+        </div>
+        <div className="card__details--capital">
+          <p className="detail__title">Capital:</p>
+          <p className="detail__value">{country.capital}</p>
         </div>
       </div>
     </div>
-  );
-};
+  </div>
+);
