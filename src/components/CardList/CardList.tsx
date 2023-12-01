@@ -5,11 +5,12 @@ import { Card } from '../Card/Card';
 
 interface ListProps {
   countries: Country[];
+  loading: boolean;
 }
 
-export const CardList: React.FC<ListProps> = ({ countries }) => (
+export const CardList: React.FC<ListProps> = ({ countries, loading }) => (
   <div className="countries-container">
-    {countries.map((country) => (
+    {loading || countries.map((country) => (
       <Card key={country.numericCode} country={country} />
     ))}
   </div>

@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
-import countriesFromServer from './components/api/countries.json';
 import { CardList } from './components/CardList/CardList';
 
 export const App: React.FC = () => {
-  const [countries] = useState(countriesFromServer);
+  const [country, setCountry] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const data = await fetch('https://restcountries.com/v2/all').then(response => response.json());
+        setCountry(data);
+        setLoading(false);
+      } catch {
+        console.log('Error');
+      }
+    };
+    fetchData();
+  }, []);
 
-  return <CardList countries={countries} />;
+  return <CardList countries={country} loading={loading}/>;
 };
 
