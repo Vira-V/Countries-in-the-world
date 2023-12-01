@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { CardList } from './components/CardList/CardList';
 import { Header } from './components/Header';
+import { SearchFilter } from './components/SearchFilter';
 
 export const App: React.FC = () => {
   const [country, setCountry] = useState([]);
@@ -26,6 +27,7 @@ export const App: React.FC = () => {
   return (
     <>
       <Header />
+      <SearchFilter />
       <CardList countries={country} loading={loading} />
     </>
   );
