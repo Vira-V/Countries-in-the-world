@@ -22,6 +22,7 @@ export const App: React.FC = () => {
           (response) => response.json(),
         );
         setCountry(data);
+        setSearchData(data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -46,10 +47,24 @@ export const App: React.FC = () => {
     }
 
     const filteredData = country.filter((data) =>
-      data.name.toLowerCase().includes(query.toLowerCase())
+      data.name.toLowerCase().includes(query.toLowerCase()),
     );
     setSearchData(filteredData);
   }, [query, country]);
+
+  const filterByRegion = (region: string) => {
+    if (region === '') {
+      setSearchData(country);
+    } else {
+      const filteredByRegion = country.filter((data) => data.region === region);
+      setSearchData(filteredByRegion);
+    }
+  };
+
+  const resetSearch = () => {
+    setSearchData(country);
+    setQuery('');
+  };
 
   return (
     <>
@@ -67,7 +82,11 @@ export const App: React.FC = () => {
             )
           ) : (
             <>
-              <SearchFilter onSearch={(searchQuery) => setQuery(searchQuery)} />
+              <SearchFilter
+                onSearch={(searchQuery) => setQuery(searchQuery)}
+                onFilter={filterByRegion}
+                resetSearch={resetSearch}
+              />
               <CardList
                 countries={searchData}
                 loading={loading}

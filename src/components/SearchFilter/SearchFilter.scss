@@ -31,36 +31,20 @@
   }
 
   &__filter {
+    border: none;
     width: max-content;
-    position: relative;
-
-    &--options {
-      position: absolute;
-      left: 0;
-      top: 58px;
-      width: 100%;
-      background-color: white;
-      box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.2);
-      border-radius: 6px;
-      z-index: 6;
-    }
-
-    &--list {
-      list-style: none;
-      padding: 1rem;
-    }
-
-    &--item {
-      padding: 0.3rem 0;
-    }
+    background-color: white;
+    box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.2);
+    border-radius: 6px;
+    z-index: 6;
   }
 
   .clear-button {
-    background-color: #e0e0e0;
+    background-color: #f0f0f0;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    padding: 0.1rem;
+    padding: 0.2rem;
     margin-left: 140px;
     color: #555;
     font-size: 14px;
