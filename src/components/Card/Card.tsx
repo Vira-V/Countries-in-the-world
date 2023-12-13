@@ -4,11 +4,12 @@ import { Country } from '../types/Country';
 
 type CardProps = {
   country: Country;
+  setDetails: (details: Country) => void;
 };
 
-export const Card: React.FC<CardProps> = ({ country }) => (
+export const Card: React.FC<CardProps> = ({ country, setDetails }) => (
   <div className="card">
-    <div className="card__image">
+    <div className="card__image" onClick={() => setDetails(country)}>
       <img src={country.flags.svg} alt="image of flag" />
     </div>
     <div className="card__content">
