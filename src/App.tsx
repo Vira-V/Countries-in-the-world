@@ -21,8 +21,9 @@ export const App: React.FC = () => {
         );
         setCountry(data);
         setLoading(false);
-      } catch {
-        console.log('Error');
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
       }
     };
     fetchData();
@@ -39,14 +40,27 @@ export const App: React.FC = () => {
   return (
     <>
       <Header />
-      {isDetailPage ? (
-        Object.keys(country)?.length > 0 && (
-          <CardDetails country={details as Country} />
-        )
+      {loading ? (
+        <p>Loading...</p>
       ) : (
         <>
-          <SearchFilter />
-          <CardList countries={country} loading={loading} setDetails={setDetails}/>
+          {isDetailPage ? (
+            country.length > 0 && (
+              <CardDetails
+                country={details as Country}
+                onBackClick={() => setDetails({})}
+              />
+            )
+          ) : (
+            <>
+              <SearchFilter />
+              <CardList
+                countries={country}
+                loading={loading}
+                setDetails={setDetails}
+              />
+            </>
+          )}
         </>
       )}
     </>
