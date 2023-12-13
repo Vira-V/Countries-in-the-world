@@ -7,10 +7,12 @@ import { CardDetails } from './components/CardDetails';
 import { Country } from './components/types/Country';
 
 export const App: React.FC = () => {
-  const [country, setCountry] = useState([]);
+  const [country, setCountry] = useState<Country[]>([]);
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({});
   const [isDetailPage, setIsDetailPage] = useState(false);
+  const [searchData, setSearchData] = useState<Country[]>([]);
+  const [query, setQuery] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +39,18 @@ export const App: React.FC = () => {
     }
   }, [details]);
 
+  useEffect(() => {
+    if (query.length <= 0) {
+      setSearchData(country);
+      return;
+    }
+
+    const filteredData = country.filter((data) =>
+      data.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setSearchData(filteredData);
+  }, [query, country]);
+
   return (
     <>
       <Header />
@@ -53,9 +67,9 @@ export const App: React.FC = () => {
             )
           ) : (
             <>
-              <SearchFilter />
+              <SearchFilter onSearch={(searchQuery) => setQuery(searchQuery)} />
               <CardList
-                countries={country}
+                countries={searchData}
                 loading={loading}
                 setDetails={setDetails}
               />
