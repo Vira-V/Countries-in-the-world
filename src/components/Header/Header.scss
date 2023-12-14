@@ -7,8 +7,16 @@
   padding: 0 6rem;
   background-color: var(--bgr-color);
 
+  @media (max-width: 800px) {
+    padding: 0 2rem;
+  }
+
   &__title {
     color: var(--text-color);
+
+    @media (max-width: 800px) {
+      font-size: 1.3rem;
+    }
   }
 
   &__theme {
