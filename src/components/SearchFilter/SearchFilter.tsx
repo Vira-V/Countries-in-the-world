@@ -1,16 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SearchFilter.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Country } from '../types/Country';
 
-export const SearchFilter: React.FC = () => {
-  const [options, setOptions] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filter, setFilter] = useState<string | null>(null);
+interface SearchFilterProps {
+  onSearch: (query: string) => void;
+  onFilter: (region: string) => void;
+  resetSearch: () => void;
+  filterData: Country[];
+}
 
-  const onFilter = (event: React.MouseEvent<HTMLLIElement>) => {
-    const selectedFilter = event.currentTarget.textContent;
-    setFilter(selectedFilter);
+const regions = ['Africa', 'America', 'Asia', 'Europe', 'Oceania'];
+
+export const SearchFilter: React.FC<SearchFilterProps> = ({
+  onSearch,
+  onFilter,
+  resetSearch,
+  filterData
+}) => {
+  const [query, setQuery] = useState<string>('');
+  const [selectedRegion, setSelectedRegion] = useState<string>('');
+
+  useEffect(() => {
+    const delaySearch = setTimeout(() => {
+      onSearch(query);
+    }, 300);
+
+    return () => clearTimeout(delaySearch);
+  }, [query, onSearch]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget;
+    setQuery(value);
+    setSelectedRegion('');
+  };
+
+  const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setSelectedRegion(value);
+
+    if (!value) {
+      resetSearch();
+    } else {
+      onFilter(value);
+      setQuery('');
+    }
+  };
+
+  const clearSearch = () => {
+    setQuery('');
+    onSearch('');
   };
 
   return (
@@ -22,33 +62,32 @@ export const SearchFilter: React.FC = () => {
           name="input"
           className="section__search--input"
           placeholder="Search for a country..."
+          value={query}
+          onChange={handleInputChange}
         />
-      </div>
-      <div className="section__filter" onClick={() => setOptions(!options)}>
-        <p>Filter by Region</p>
-        <FontAwesomeIcon icon={faAngleDown} />
-        {options && (
-          <div className="section__filter--options">
-            <ul className="section__filter--list">
-              <li className="section__filter--item" onClick={onFilter}>
-                Africa
-              </li>
-              <li className="section__filter--item" onClick={onFilter}>
-                America
-              </li>
-              <li className="section__filter--item" onClick={onFilter}>
-                Asia
-              </li>
-              <li className="section__filter--item" onClick={onFilter}>
-                Europe
-              </li>
-              <li className="section__filter--item" onClick={onFilter}>
-                Oceania
-              </li>
-            </ul>
-          </div>
+        {query && (
+          <button className="clear-button" onClick={clearSearch}>
+            X
+          </button>
         )}
       </div>
+      <select
+        value={selectedRegion}
+        onChange={handleRegionChange}
+        className="section__filter"
+      >
+        <option value="">Filter by Region</option>
+        {regions.map((region) => (
+          <option key={region} value={region}>
+            {region}
+          </option>
+        ))}
+      </select>
+      {selectedRegion && filterData.length === 0 && !query && (
+        <div className="no-countries-message">
+          No countries from this region.
+        </div>
+      )}
     </div>
   );
 };

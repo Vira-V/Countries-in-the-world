@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import './App.scss';
 import { CardList } from './components/CardList/CardList';
 import { Header } from './components/Header';
 import { SearchFilter } from './components/SearchFilter';
 import { CardDetails } from './components/CardDetails';
 import { Country } from './components/types/Country';
+import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
-  const [country, setCountry] = useState([]);
+  const [country, setCountry] = useState<Country[]>([]);
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({});
   const [isDetailPage, setIsDetailPage] = useState(false);
+  const [searchData, setSearchData] = useState<Country[]>([]);
+  const [query, setQuery] = useState<string>('');
+  const [filterData, setFilterData] = useState<Country[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +23,7 @@ export const App: React.FC = () => {
           (response) => response.json(),
         );
         setCountry(data);
+        setSearchData(data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -37,11 +41,54 @@ export const App: React.FC = () => {
     }
   }, [details]);
 
+  useEffect(() => {
+    if (query.length <= 0) {
+      setSearchData(country);
+      setFilterData([]);
+      return;
+    }
+
+    const filteredData = country.filter((data) =>
+      data.name.toLowerCase().includes(query.toLowerCase()),
+    );
+    setSearchData(filteredData);
+    setFilterData(filteredData);
+  }, [query, country]);
+
+  const filterByRegion = (region: string) => {
+    if (region === '') {
+      setSearchData(country);
+      setFilterData([]);
+    } else {
+      const filteredByRegion = country.filter((data) => data.region === region);
+      setSearchData(filteredByRegion);
+      setFilterData(filteredByRegion);
+    }
+  };
+
+  const resetSearch = () => {
+    setSearchData(country);
+    setQuery('');
+    setFilterData([]);
+  };
+
+  const handleBorderCountryClick = async (countryCode: string) => {
+    try {
+      const borderCountry = await fetch(
+        `https://restcountries.com/v2/alpha/${countryCode}`,
+      ).then((response) => response.json());
+
+      setDetails(borderCountry);
+    } catch (error) {
+      console.error('Error fetching border country data:', error);
+    }
+  };
+
   return (
     <>
       <Header />
       {loading ? (
-        <p>Loading...</p>
+        <Loader />
       ) : (
         <>
           {isDetailPage ? (
@@ -49,13 +96,19 @@ export const App: React.FC = () => {
               <CardDetails
                 country={details as Country}
                 onBackClick={() => setDetails({})}
+                onBorderCountryClick={handleBorderCountryClick}
               />
             )
           ) : (
             <>
-              <SearchFilter />
+              <SearchFilter
+                onSearch={(searchQuery) => setQuery(searchQuery)}
+                onFilter={filterByRegion}
+                resetSearch={resetSearch}
+                filterData={filterData}
+              />
               <CardList
-                countries={country}
+                countries={searchData}
                 loading={loading}
                 setDetails={setDetails}
               />
