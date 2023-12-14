@@ -9,49 +9,49 @@
     display: flex;
     align-items: center;
     width: 380px;
-    background-color: white;
+    background-color: var(--bgr-color);
     gap: 1rem;
-    box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.2);
+    box-shadow: var(--shadow);
     border-radius: 6px;
     padding: 1rem;
 
     &--icon {
-      color: #949191;
+      color: var(--input-text);
     }
 
     &--input {
       border: none;
       outline: none;
+      color: var(--input-text);
+      background-color: var(--bgr-color);
     }
 
     input::placeholder {
-      color: #949191;
       font-size: 15px;
+      color: var(--input-text);
     }
   }
 
   &__filter {
     border: none;
+    outline: none;
     width: max-content;
-    background-color: white;
-    box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.2);
-    border-radius: 6px;
+    color: var(--text-color);
     z-index: 6;
   }
 
   .clear-button {
-    background-color: #f0f0f0;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    padding: 0.2rem;
-    margin-left: 140px;
-    color: #555;
+    padding: 0.1rem;
+    margin-left: 100px;
+    color: #333;
     font-size: 14px;
     transition: background-color 0.3s;
 
     &:hover {
-      background-color: #c0c0c0;
+      background-color: #4a6c8a;
     }
   }
 }
