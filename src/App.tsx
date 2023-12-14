@@ -13,6 +13,7 @@ export const App: React.FC = () => {
   const [isDetailPage, setIsDetailPage] = useState(false);
   const [searchData, setSearchData] = useState<Country[]>([]);
   const [query, setQuery] = useState<string>('');
+  const [filterData, setFilterData] = useState<Country[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +44,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (query.length <= 0) {
       setSearchData(country);
+      setFilterData([]);
       return;
     }
 
@@ -50,20 +52,24 @@ export const App: React.FC = () => {
       data.name.toLowerCase().includes(query.toLowerCase()),
     );
     setSearchData(filteredData);
+    setFilterData(filteredData);
   }, [query, country]);
 
   const filterByRegion = (region: string) => {
     if (region === '') {
       setSearchData(country);
+      setFilterData([]);
     } else {
       const filteredByRegion = country.filter((data) => data.region === region);
       setSearchData(filteredByRegion);
+      setFilterData(filteredByRegion);
     }
   };
 
   const resetSearch = () => {
     setSearchData(country);
     setQuery('');
+    setFilterData([]);
   };
 
   const handleBorderCountryClick = async (countryCode: string) => {
@@ -99,6 +105,7 @@ export const App: React.FC = () => {
                 onSearch={(searchQuery) => setQuery(searchQuery)}
                 onFilter={filterByRegion}
                 resetSearch={resetSearch}
+                filterData={filterData}
               />
               <CardList
                 countries={searchData}

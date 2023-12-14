@@ -3,6 +3,7 @@
   justify-content: space-between;
   padding: 0 5rem;
   padding-top: 4rem;
+  position: relative;
 
   &__search,
   &__filter {
@@ -53,5 +54,16 @@
     &:hover {
       background-color: #4a6c8a;
     }
+  }
+
+  .no-countries-message {
+    position: absolute;
+    left: 50%;
+    top: 120%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: var(--text-color);
+    text-align: center;
+    margin-top: 1rem;
   }
 }

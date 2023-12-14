@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SearchFilter.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Country } from '../types/Country';
 
 interface SearchFilterProps {
   onSearch: (query: string) => void;
   onFilter: (region: string) => void;
   resetSearch: () => void;
+  filterData: Country[];
 }
 
 const regions = ['Africa', 'America', 'Asia', 'Europe', 'Oceania'];
@@ -15,9 +17,10 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   onSearch,
   onFilter,
   resetSearch,
+  filterData
 }) => {
   const [query, setQuery] = useState<string>('');
-  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<string>('');
 
   useEffect(() => {
     const delaySearch = setTimeout(() => {
@@ -28,18 +31,19 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   }, [query, onSearch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.currentTarget.value);
-    setSelectedRegion(null);
+    const { value } = e.currentTarget;
+    setQuery(value);
+    setSelectedRegion('');
   };
 
   const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = e.target.value;
-    setSelectedRegion(selectedValue);
+    const { value } = e.target;
+    setSelectedRegion(value);
 
-    if (selectedValue === '') {
+    if (!value) {
       resetSearch();
     } else {
-      onFilter(selectedValue);
+      onFilter(value);
       setQuery('');
     }
   };
@@ -68,7 +72,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
         )}
       </div>
       <select
-        value={selectedRegion || ''}
+        value={selectedRegion}
         onChange={handleRegionChange}
         className="section__filter"
       >
@@ -79,6 +83,11 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
           </option>
         ))}
       </select>
+      {selectedRegion && filterData.length === 0 && !query && (
+        <div className="no-countries-message">
+          No countries from this region.
+        </div>
+      )}
     </div>
   );
 };
