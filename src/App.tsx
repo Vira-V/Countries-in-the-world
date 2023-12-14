@@ -66,6 +66,18 @@ export const App: React.FC = () => {
     setQuery('');
   };
 
+  const handleBorderCountryClick = async (countryCode: string) => {
+    try {
+      const borderCountry = await fetch(
+        `https://restcountries.com/v2/alpha/${countryCode}`,
+      ).then((response) => response.json());
+
+      setDetails(borderCountry);
+    } catch (error) {
+      console.error('Error fetching border country data:', error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -78,6 +90,7 @@ export const App: React.FC = () => {
               <CardDetails
                 country={details as Country}
                 onBackClick={() => setDetails({})}
+                onBorderCountryClick={handleBorderCountryClick}
               />
             )
           ) : (

@@ -7,11 +7,13 @@ import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
 type DetailsProps = {
   country: Country;
   onBackClick: () => void;
+  onBorderCountryClick: (countryCode: string) => void;
 };
 
 export const CardDetails: React.FC<DetailsProps> = ({
   country,
   onBackClick,
+  onBorderCountryClick,
 }) => {
   return (
     <div className="country__details">
@@ -83,7 +85,11 @@ export const CardDetails: React.FC<DetailsProps> = ({
             <div className="country__borders">
               <span className="panel__paragraph--name">Border Countries: </span>
               {country.borders.map((borderName, numericCode) => (
-                <div className="detail__button" key={numericCode}>
+                <div
+                  className="detail__button"
+                  key={numericCode}
+                  onClick={() => onBorderCountryClick(borderName)}
+                >
                   {borderName}
                 </div>
               ))}
