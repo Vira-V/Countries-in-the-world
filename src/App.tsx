@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './App.scss';
 import { CardList } from './components/CardList/CardList';
 import { Header } from './components/Header';
 import { SearchFilter } from './components/SearchFilter';
 import { CardDetails } from './components/CardDetails';
 import { Country } from './components/types/Country';
+import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
   const [country, setCountry] = useState<Country[]>([]);
@@ -82,7 +82,7 @@ export const App: React.FC = () => {
     <>
       <Header />
       {loading ? (
-        <p>Loading...</p>
+        <Loader />
       ) : (
         <>
           {isDetailPage ? (
