@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/countries-in-the-world/static/css/main.6a8f17e2.css",
+    "main.js": "/countries-in-the-world/static/js/main.b4433f97.js",
+    "static/js/787.4380c4eb.chunk.js": "/countries-in-the-world/static/js/787.4380c4eb.chunk.js",
+    "index.html": "/countries-in-the-world/index.html",
+    "main.6a8f17e2.css.map": "/countries-in-the-world/static/css/main.6a8f17e2.css.map",
+    "main.b4433f97.js.map": "/countries-in-the-world/static/js/main.b4433f97.js.map",
+    "787.4380c4eb.chunk.js.map": "/countries-in-the-world/static/js/787.4380c4eb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6a8f17e2.css",
+    "static/js/main.b4433f97.js"
+  ]
+}
